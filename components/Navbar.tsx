@@ -107,7 +107,7 @@ export default function Navbar() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "tween", duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-black flex flex-col pt-24 px-8"
+            className="fixed inset-0 z-40 bg-black flex flex-col pt-28 px-8"
           >
             <nav className="flex flex-col gap-6">
               {navLinks.map((link, i) => (

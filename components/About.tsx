@@ -30,9 +30,9 @@ const pillars = [
 ];
 
 const videoPanels = [
-  "https://player.vimeo.com/video/1187875197?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1",
-  "https://player.vimeo.com/video/1187873404?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1",
-  "https://player.vimeo.com/video/1187876074?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1",
+  "https://player.vimeo.com/video/1187875197?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1&playsinline=1",
+  "https://player.vimeo.com/video/1187873404?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1&playsinline=1",
+  "https://player.vimeo.com/video/1187876074?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1&playsinline=1",
 ];
 
 function CountUp({ end, suffix }: { end: number; suffix: string }) {

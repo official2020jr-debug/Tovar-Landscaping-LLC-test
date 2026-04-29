@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Star } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 
 const testimonials = [
   {
@@ -37,10 +37,32 @@ const testimonials = [
   },
 ];
 
-const doubled = [...testimonials, ...testimonials];
+const variants = {
+  enter: (dir: number) => ({ x: dir > 0 ? "100%" : "-100%", opacity: 0 }),
+  center: { x: 0, opacity: 1 },
+  exit: (dir: number) => ({ x: dir > 0 ? "-100%" : "100%", opacity: 0 }),
+};
 
 export default function Testimonials() {
-  const [paused, setPaused] = useState(false);
+  const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(1);
+
+  const next = useCallback(() => {
+    setDirection(1);
+    setCurrent((prev) => (prev + 1) % testimonials.length);
+  }, []);
+
+  const prev = useCallback(() => {
+    setDirection(-1);
+    setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(next, 5000);
+    return () => clearInterval(timer);
+  }, [next]);
+
+  const t = testimonials[current];
 
   return (
     <section className="bg-[#080808] py-24 overflow-hidden">
@@ -93,45 +115,72 @@ export default function Testimonials() {
         </div>
       </div>
 
-      {/* Carousel */}
-      <div
-        className="relative"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
-        <div
-          className="flex gap-6"
-          style={{
-            animation: paused ? "none" : "marquee 40s linear infinite",
-            width: "max-content",
-          }}
-        >
-          {doubled.map((t, i) => (
-            <div
-              key={i}
-              className="w-80 sm:w-96 flex-shrink-0 bg-[#0d0d0d] border border-white/5 rounded-2xl p-8 hover:border-neon-green/30 transition-colors"
+      {/* Slideshow */}
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        <div className="relative overflow-hidden">
+          <AnimatePresence custom={direction} mode="wait">
+            <motion.div
+              key={current}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.45, ease: "easeInOut" }}
+              className="bg-[#0d0d0d] border border-white/5 rounded-2xl p-8 sm:p-10"
             >
               <div className="flex gap-1 mb-5">
                 {[...Array(t.rating)].map((_, j) => (
-                  <Star key={j} size={16} className="text-neon-green fill-neon-green" />
+                  <Star key={j} size={18} className="text-neon-green fill-neon-green" />
                 ))}
               </div>
-              <p className="font-poppins text-white/70 text-sm leading-relaxed italic mb-6">
+              <p className="font-poppins text-white/70 text-sm sm:text-base leading-relaxed italic mb-8">
                 &ldquo;{t.text}&rdquo;
               </p>
               <div>
-                <p className="font-anton text-white text-lg tracking-wider">{t.name}</p>
-                <p className="font-poppins text-neon-green text-xs tracking-widest uppercase mt-0.5">
+                <p className="font-anton text-white text-xl tracking-wider">{t.name}</p>
+                <p className="font-poppins text-neon-green text-xs tracking-widest uppercase mt-1">
                   {t.location}
                 </p>
               </div>
-            </div>
-          ))}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        {/* Fade edges */}
-        <div className="absolute inset-y-0 left-0 w-8 sm:w-24 bg-gradient-to-r from-[#080808] to-transparent pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-8 sm:w-24 bg-gradient-to-l from-[#080808] to-transparent pointer-events-none" />
+        {/* Controls */}
+        <div className="flex items-center justify-between mt-6">
+          <button
+            onClick={prev}
+            className="w-10 h-10 border border-white/10 rounded-full flex items-center justify-center text-white/40 hover:text-neon-green hover:border-neon-green transition-colors"
+            aria-label="Previous review"
+          >
+            <ChevronLeft size={18} />
+          </button>
+
+          {/* Dot indicators */}
+          <div className="flex items-center gap-2">
+            {testimonials.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }}
+                className={`rounded-full transition-all duration-300 ${
+                  i === current
+                    ? "bg-neon-green w-6 h-2"
+                    : "bg-white/20 w-2 h-2 hover:bg-white/40"
+                }`}
+                aria-label={`Go to review ${i + 1}`}
+              />
+            ))}
+          </div>
+
+          <button
+            onClick={next}
+            className="w-10 h-10 border border-white/10 rounded-full flex items-center justify-center text-white/40 hover:text-neon-green hover:border-neon-green transition-colors"
+            aria-label="Next review"
+          >
+            <ChevronRight size={18} />
+          </button>
+        </div>
       </div>
     </section>
   );
