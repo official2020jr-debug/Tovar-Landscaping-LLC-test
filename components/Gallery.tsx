@@ -6,11 +6,7 @@ import Image from "next/image";
 import { X, ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 
 const galleryItems = [
-  { id: 1,  src: "/images/gallery-1.jpg",  alt: "Hardscape patio project",            height: "tall"  },
-  { id: 3,  src: "/images/gallery-3.jpg",  alt: "Fire pit and outdoor living area",   height: "short" },
-  { id: 4,  src: "/images/gallery-4.jpg",  alt: "Grass and paver pathway",            height: "short" },
-  { id: 6,  src: "/images/gallery-6.jpg",  alt: "Landscape art design",               height: "short" },
-  { id: 7,  src: "/images/gallery-7.jpg",  alt: "Fire pit walkway design",            height: "short" },
+  { id: 4,  src: "/images/gallery-4.jpg",  alt: "Grass and paver pathway",            height: "tall"  },
   { id: 8,  src: "/images/gallery-9.jpg",  alt: "Staircase and landscape detail",     height: "tall"  },
   { id: 9,  src: "/images/gallery-10.jpg", alt: "Patio installation project",         height: "short" },
   { id: 10, src: "/images/gallery-11.jpg", alt: "Landscape transformation",           height: "short" },
